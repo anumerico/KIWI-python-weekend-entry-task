@@ -19,7 +19,7 @@ user can specify the number of bags using:
 - `--ret` is a simple flag triggering the possibility to get a return ticket, defaultly set to False, 
 currently allowing no less then 12h to spend in the destination country
 
-- `--exp=String` flag to save the json under specified name, saves is made as String.json, when the 'String' not specified, defaultly as export.json
+- `--exp=String` or `--exp String` flag to save the json under specified name, save is made as String.json, when the 'String' not specified, defaultly as export.json
 
 No special distros, installations are needed.
 ## OUTPUT
@@ -30,8 +30,7 @@ For `python -m solution example0.csv WIW ECV --bags=1 --ret` it looks as:
 
 
 ```json
-{
-    "allflights": [
+[
         {
             "flights": [
                 {
