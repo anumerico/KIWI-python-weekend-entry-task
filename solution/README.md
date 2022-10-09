@@ -2,8 +2,6 @@
 
 **This was a task given by kiwi.com in order to enroll in the upcoming BCN code camp**
 
-**ACK to Adam Mikulášek**
-
 ## How to run it?
 The easiest way to run this code is by running it as:
 
