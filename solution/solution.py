@@ -1,3 +1,6 @@
+import os
+import sys
+import argparse
 import csv
 import time
 import datetime
@@ -5,14 +8,67 @@ import json
 import operator
 from collections import deque
 
-from input_parser import stdin
+def inputs():
+    # required args
+    path = ""
+    input_origin = ""
+    input_destination = ""
 
-# This was a task given by kiwi.com in order to enroll in upcomming code camp in Košice, Slovakia
-# This is my solution.
+    # optional args
+    input_bags = 0
+
+    is_return = False
+
+    parser = argparse.ArgumentParser(description="Parser tutorial")
+    parser.add_argument("--bags", default=0, type=int,
+                        required=False, help="This is the number of bags")
+    parser.add_argument("--return",dest = 'roundtrip', action='store', default=False,
+                        nargs='?', required=False, help="This is the return flight option")
+    parser.add_argument("--days", default=0, type=int, 
+                        required=False, help="This is the number of days to spend on destination before the return flight")                    
+    parser.add_argument("--exp", default="", type=str, nargs='*',
+                        required=False, help="This is the option to save the json export")
+
+    args, _ = parser.parse_known_args()
+
+    # required args
+    assert(sys.argv[1]), "Please provide path, origin and destination"
+    path = sys.argv[1]
+    is_exist = os.path.exists(path)
+
+    assert(is_exist), "Provided path to csv is not valid"
+
+    assert(sys.argv[2]), "Please provide both, origin and destination"
+    input_origin = sys.argv[2]
+
+    assert(sys.argv[3]), "Please provide both, origin and destination"
+    input_destination = sys.argv[3]
+
+    # optional args
+    input_bags = args.bags
+    days = args.days
+    print(days)    
+
+    if args.roundtrip is None:
+        is_return = True
+    else:
+        is_return = args.roundtrip
+    
+        
+    # export .json name
+    if args.exp == '':
+        is_export = False
+    elif args.exp == []:
+        is_export = "export"
+    else:
+        is_export = args.exp[0]
+
+
+    return path, input_origin, input_destination, input_bags, is_return, days, is_export
 
 
 def module():
-    path, input_origin, input_destination, input_bags, is_return, is_export = stdin()
+    path, input_origin, input_destination, input_bags, is_return, days, is_export = inputs()
 
     ## CONVERTING ##
 
@@ -240,10 +296,10 @@ def module():
                         q.append(src+[elem])
         return result
 
-    # lets assume we would like to spend at leats 12h in destination while return flight trip
+    # lets have no assumptions about the time we would like to spend on destination before the return flight trip
     def roundtrip_flight_time_pred(t1, t2):
         delta = travel_time(convert_to_datetime(t1), convert_to_datetime(t2))
-        return delta >= datetime.timedelta(hours=12)
+        return delta >= datetime.timedelta(days)
 
     # running the lame_BFS two times, then matching the departures and comming back
 
@@ -281,7 +337,7 @@ def module():
 
     print(json.dumps(aFx.reprJSON()['allflights'], cls=ComplexEncoder, indent=4))
 
-    #  TODO: specifying the "holiday time" in destination for return flights
+    
 
 
 # this is used to call this python script as a module in terminal
