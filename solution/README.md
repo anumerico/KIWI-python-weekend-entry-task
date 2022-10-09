@@ -32,7 +32,7 @@ Code runs as is, no environment setup is required other than having python insta
 
 **Output is a json printed into the terminal, flights are ordered by price**
 
-For `python -m solution ./example/example0.csv WIW ECV --bags=1 --return --days 9` it looks as:
+For `python -m solution ../example/example0.csv WIW ECV --bags=1 --return --days 9` it looks as:
 
 
 ```json
