@@ -24,8 +24,8 @@ def inputs():
                         required=False, help="This is the number of bags")
     parser.add_argument("--return",dest = 'roundtrip', action='store', default=False,
                         nargs='?', required=False, help="This is the return flight option")
-    parser.add_argument("--days", default=0, type=int, 
-                        required=False, help="This is the number of days to spend on destination before the return flight")                    
+    parser.add_argument("--hours", default=0, type=int, 
+                        required=False, help="This is the number of hours to spend on destination before the return flight")                    
     parser.add_argument("--exp", default="", type=str, nargs='*',
                         required=False, help="This is the option to save the json export")
 
@@ -46,8 +46,8 @@ def inputs():
 
     # optional args
     input_bags = args.bags
-    days = args.days
-    print(days)    
+    hours = args.hours
+    #print(hours)    
 
     if args.roundtrip is None:
         is_return = True
@@ -64,11 +64,11 @@ def inputs():
         is_export = args.exp[0]
 
 
-    return path, input_origin, input_destination, input_bags, is_return, days, is_export
+    return path, input_origin, input_destination, input_bags, is_return, hours, is_export
 
 
 def module():
-    path, input_origin, input_destination, input_bags, is_return, days, is_export = inputs()
+    path, input_origin, input_destination, input_bags, is_return, hours, is_export = inputs()
 
     ## CONVERTING ##
 
@@ -299,7 +299,7 @@ def module():
     # lets have no assumptions about the time we would like to spend on destination before the return flight trip
     def roundtrip_flight_time_pred(t1, t2):
         delta = travel_time(convert_to_datetime(t1), convert_to_datetime(t2))
-        return delta >= datetime.timedelta(days)
+        return delta >= datetime.timedelta(hours=hours)
 
     # running the lame_BFS two times, then matching the departures and comming back
 
